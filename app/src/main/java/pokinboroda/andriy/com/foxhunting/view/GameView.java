@@ -32,11 +32,11 @@ public class GameView {
     }
 
     public void updateView() {
-        levelTextView.setText(gameModel.getLevel() + "");
-        foxesTextView.setText(gameModel.getHuntedFoxes() + " / "
-                              + gameModel.getFoxes());
-        powerTextView.setText(gameModel.getPower() + "");
-        scoreTextView.setText(gameModel.getPower() + "");
+        levelTextView.setText(gameModel.level + "");
+        foxesTextView.setText(gameModel.huntedFoxes + " / "
+                              + gameModel.foxes);
+        powerTextView.setText(gameModel.power + "");
+        scoreTextView.setText(gameModel.score + "");
         gameAreaView.updateView(gameModel.getGameAreaFields());
     }
 

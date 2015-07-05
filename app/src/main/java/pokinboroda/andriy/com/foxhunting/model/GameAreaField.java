@@ -9,7 +9,7 @@ public class GameAreaField {
     public static final int ICON_FOX = R.drawable.icon_fox;
     public static final int ICON_TREE = R.drawable.icon_tree;
     public static final int ICON_BLANK = R.color.game_area_background;
-    public static final int ITEM_FOX = -1;
+    public static final int FIELD_FOX = -1;
 
     public enum States {
         HIDDEN,
@@ -38,7 +38,7 @@ public class GameAreaField {
             text = "";
             imageResource = ICON_TREE;
         } else {
-            if (value == ITEM_FOX) {
+            if (value == FIELD_FOX) {
                 text = "";
                 imageResource = ICON_FOX;
             } else {
