@@ -6,12 +6,15 @@ import android.content.DialogInterface;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 
 import java.util.Random;
 
 import pokinboroda.andriy.com.foxhunting.R;
 import pokinboroda.andriy.com.foxhunting.model.GameAreaField;
 import pokinboroda.andriy.com.foxhunting.model.GameModel;
+import pokinboroda.andriy.com.foxhunting.score.ScoreItem;
+import pokinboroda.andriy.com.foxhunting.score.ScoreList;
 import pokinboroda.andriy.com.foxhunting.view.GameView;
 
 
@@ -24,10 +27,12 @@ public class GameController {
 
     private GameModel gameModel;
     private GameView gameView;
+    private ScoreList scoreList;
 
-    public GameController(Activity activity) {
+    public GameController(Activity activity, ScoreList scoreList) {
         this.activity = activity;
         this.gameModel = new GameModel();
+        this.scoreList = scoreList;
         initializeGameModel();
 
         this.gameView = new GameView(activity, gameModel);
@@ -35,6 +40,7 @@ public class GameController {
         this.gameView.setGameAreaFieldClickListener(new OnFieldClickListener());
 
     }
+
     public GameController(Activity activity, GameModel gameModel) {
         this.activity = activity;
         this.gameModel = gameModel;
@@ -115,6 +121,13 @@ public class GameController {
         AlertDialog.Builder alertDialog = new AlertDialog
                 .Builder(activity);
 
+        final View dialogLayout = activity.getLayoutInflater()
+                .inflate(R.layout.dialog_enter_name, null);
+
+        if (scoreList.getWorstScore().getScore() < gameModel.score) {
+            alertDialog.setView(dialogLayout);
+        }
+
         alertDialog
                 .setTitle(R.string.lose_message)
                 .setPositiveButton(R.string.new_game_button, null)
@@ -129,6 +142,21 @@ public class GameController {
                 .setOnDismissListener(new DialogInterface.OnDismissListener() {
                             @Override
                             public void onDismiss(DialogInterface dialog) {
+                                if (scoreList.getWorstScore().getScore()
+                                        < gameModel.score) {
+                                    String name = ((EditText) dialogLayout
+                                            .findViewById(R.id.name_edit))
+                                            .getText().toString();
+
+                                    name = (name.equals(""))
+                                            ? "Unknown player"
+                                            : name;
+
+                                    scoreList.addScore(
+                                            new ScoreItem(gameModel.score,
+                                                    gameModel.level, name));
+                                }
+
                                 newGame();
                             }
                         })

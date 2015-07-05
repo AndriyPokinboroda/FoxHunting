@@ -1,6 +1,7 @@
 package pokinboroda.andriy.com.foxhunting;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import pokinboroda.andriy.com.foxhunting.Controller.GameController;
+import pokinboroda.andriy.com.foxhunting.score.ScoreList;
 
 
 public class GameActivity extends AppCompatActivity {
@@ -23,6 +25,8 @@ public class GameActivity extends AppCompatActivity {
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
 
+    private ScoreList scoreList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +34,17 @@ public class GameActivity extends AppCompatActivity {
 
         createDrawerMenu();
 
-        new GameController(this);
+        scoreList = new ScoreList(this);
+
+        new GameController(this, scoreList);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        scoreList.saveToFile();
     }
 
     @Override
@@ -48,7 +62,7 @@ public class GameActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // Drawer side menu
+    /* Drawer side menu */
     private void createDrawerMenu(){
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -83,6 +97,8 @@ public class GameActivity extends AppCompatActivity {
 
             switch (position) {
                 case 0 : // Score
+                    startActivity(new Intent(GameActivity.this,
+                            ScoreActivity.class));
                     break;
                 case 1 : // Rules
                     break;
