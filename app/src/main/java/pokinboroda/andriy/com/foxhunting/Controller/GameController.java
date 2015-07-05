@@ -39,7 +39,8 @@ public class GameController {
         this.gameView = new GameView(activity, gameModel);
         this.gameView.updateView();
         this.gameView.setGameAreaFieldClickListener(new OnFieldClickListener());
-
+        this.gameView.setNewGameButtonClickListener(
+                new NewGameOnClickListener());
     }
 
     public GameController(Activity activity,ScoreList scoreList,
@@ -48,12 +49,20 @@ public class GameController {
         this.gameModel = gameModel;
         this.scoreList = scoreList;
         this.gameView = new GameView(activity,gameModel);
-//        this.gameView.updateView();
         this.gameView.setGameAreaFieldClickListener(new OnFieldClickListener());
+        this.gameView.setNewGameButtonClickListener(new NewGameOnClickListener());
     }
 
     public GameModel getGameModel() {
         return this.gameModel;
+    }
+
+    private class NewGameOnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            newGame();
+        }
     }
 
     private class OnFieldClickListener implements OnItemClickListener {
@@ -187,7 +196,7 @@ public class GameController {
     private void newGame() {
         initializeGameModel();
 
-        gameView.updateView();
+        gameView = new GameView(activity, gameModel);
         gameView.setGameAreaFieldClickListener(new OnFieldClickListener());
 
     }

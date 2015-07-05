@@ -1,6 +1,8 @@
 package pokinboroda.andriy.com.foxhunting.view;
 
 import android.app.Activity;
+import android.content.DialogInterface;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
@@ -15,6 +17,7 @@ public class GameView {
     private TextView foxesTextView;
     private TextView powerTextView;
     private TextView scoreTextView;
+    private TextView newGameButton;
 
     private Activity activity;
     private GameModel gameModel;
@@ -29,6 +32,8 @@ public class GameView {
         this.foxesTextView = (TextView) activity.findViewById(R.id.foxes_text);
         this.powerTextView = (TextView) activity.findViewById(R.id.power_text);
         this.scoreTextView = (TextView) activity.findViewById(R.id.score_text);
+        this.newGameButton = (TextView) activity
+                .findViewById(R.id.button_new_game);
 
         updateStatistic();
     }
@@ -49,5 +54,10 @@ public class GameView {
     public void setGameAreaFieldClickListener(
             AdapterView.OnItemClickListener clickListener) {
         this.gameAreaView.setOnFieldClickListener(clickListener);
+    }
+
+    public void setNewGameButtonClickListener(
+            View.OnClickListener clickListener) {
+        newGameButton.setOnClickListener(clickListener);
     }
 }
