@@ -1,14 +1,67 @@
 <resources>
-    <string name="app_name">FoxHunting</string>
+
+    <string name="app_name">Fox Hunting</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_example">Example action</string>
+    <!-- Game activity -->
+    <string name="level_label">LEVEL</string>
+    <string name="foxes_label">FOXES</string>
+    <string name="power_label">POWER</string>
+    <string name="score_label">SCORE</string>
+    <!-- Dialogs -->
+    <string name="level_up_message">Level completed!</string>
+    <string name="lose_message">You are lose!</string>
+    <string name="top_ten_message">Your score in top 10.</string>
+
+    <string name="name_hint">Enter your name!</string>
+
+    <string name="exit_button">EXIT</string>
+    <string name="close_button">CLOSE</string>
+    <string name="continue_button">CONTINUE</string>
+    <string name="new_game_button">NEW GAME</string>
+    <!-- Drawer -->
+    <string name="drawer_menu_title">MENU</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string-array name="menu_array">
+        <item>Best scores</item>
+        <item>How to play?</item>
+        <item>About</item>
+        <item>Exit</item>
+    </string-array>
+    <string name="title_activity_about">About</string>
 
-    <string name="action_example">Example action</string>
+    <string name="hello_world">Hello world!</string>
 
-    <string name="action_settings">Settings</string>
+    <!-- About -->
+    <string name="about_title">About</string>
+    <string name="about_message">Created by Andriy Pokinboroda.\n Version 0.1 Alfa</string>
+
+    <!-- ScoreActivity -->
+    <string name="title_activity_score">Score</string>
+    <string name="action_delete">Delete</string>
+
+    <!-- Rules -->
+    <string name="title_activity_rules">Game rules</string>
+    <string name="rules_text">
+        <b>Мета гри</b>\n
+        \tНеобхідно пройти якомога більше рівнів, знаходячи на ігровому полі спрятавшихся лисиць, і заробити
+        якомога більше очок.
+        \n\n
+        <b>Правила гри</b>\n
+        \tНа ігровому полі сховалися лисиці. На першому рівні це три лисиці, а на кожному наступному на одну
+        лисицю більше.Вам необхідно логічно обчислити, де ці лисиці можуть знаходитися, і відкрити лисиць.\n\n
+        \tЛогіка пошуку ґрунтується на свідченнях «локатора», відображуваних у вигляді цифр в порожніх
+        клітинах ігрового поля. Цифра в клітці означає, що на горизонталі, вертикалі і диагоналях
+        \tперетинають дану клітину знаходиться певна кількість лисиць.\n\n
+        Не поспішайте натискати на клітку, якщо ви не впевнені, що лисиця саме там. При кожному промаху
+        сил у мисливця стає менше і при повному занепаді сил гра буде програна. Навпаки, кожен вдалий
+        постріл додає сил.
+    </string>
+
 </resources>
