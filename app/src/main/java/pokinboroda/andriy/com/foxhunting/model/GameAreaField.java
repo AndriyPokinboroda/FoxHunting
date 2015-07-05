@@ -1,11 +1,13 @@
 package pokinboroda.andriy.com.foxhunting.model;
 
+import java.io.Serializable;
+
 import pokinboroda.andriy.com.foxhunting.R;
 
 /**
  * Created by andriy on 05.07.15.
  */
-public class GameAreaField {
+public class GameAreaField implements Serializable {
     public static final int ICON_FOX = R.drawable.icon_fox;
     public static final int ICON_TREE = R.drawable.icon_tree;
     public static final int ICON_BLANK = R.color.game_area_background;

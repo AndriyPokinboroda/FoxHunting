@@ -13,19 +13,24 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import pokinboroda.andriy.com.foxhunting.Controller.GameController;
+import pokinboroda.andriy.com.foxhunting.model.GameModel;
 import pokinboroda.andriy.com.foxhunting.score.ScoreList;
+import pokinboroda.andriy.com.foxhunting.util.ObjectSerializer;
 
 
 public class GameActivity extends AppCompatActivity {
+    private static final String GAME_MODEL_FILE = "/gameModel.obj";
 
-    //Drawer
+    /* Drawer */
     private ListView menuList;
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
 
     private ScoreList scoreList;
+    private GameController gameController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,15 +41,24 @@ public class GameActivity extends AppCompatActivity {
 
         scoreList = new ScoreList(this);
 
-        new GameController(this, scoreList);
+        GameModel gameModel = ObjectSerializer
+                .deserializeFromFile(this, GAME_MODEL_FILE);
 
+        if (gameModel == null) {
+            gameController = new GameController(this, scoreList);
+        } else {
+            gameController = new GameController(this, scoreList, gameModel);
+        }
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
 
         scoreList.saveToFile();
+
+        ObjectSerializer.serializeToFile(this, GAME_MODEL_FILE,
+                                         gameController.getGameModel());
     }
 
     @Override

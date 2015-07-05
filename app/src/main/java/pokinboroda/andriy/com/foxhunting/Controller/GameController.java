@@ -33,6 +33,7 @@ public class GameController {
         this.activity = activity;
         this.gameModel = new GameModel();
         this.scoreList = scoreList;
+
         initializeGameModel();
 
         this.gameView = new GameView(activity, gameModel);
@@ -41,12 +42,18 @@ public class GameController {
 
     }
 
-    public GameController(Activity activity, GameModel gameModel) {
+    public GameController(Activity activity,ScoreList scoreList,
+                          GameModel gameModel) {
         this.activity = activity;
         this.gameModel = gameModel;
+        this.scoreList = scoreList;
         this.gameView = new GameView(activity,gameModel);
-        this.gameView.updateView();
+//        this.gameView.updateView();
         this.gameView.setGameAreaFieldClickListener(new OnFieldClickListener());
+    }
+
+    public GameModel getGameModel() {
+        return this.gameModel;
     }
 
     private class OnFieldClickListener implements OnItemClickListener {
@@ -171,7 +178,9 @@ public class GameController {
         gameModel.foxes++;
         gameModel.huntedFoxes = GameModel.HUNTED_FOXES_DEFAULT;
 
-        gameView.updateView();
+        initializeGameAreaFields();
+
+        gameView = new GameView(activity, gameModel);
         gameView.setGameAreaFieldClickListener(new OnFieldClickListener());
     }
 

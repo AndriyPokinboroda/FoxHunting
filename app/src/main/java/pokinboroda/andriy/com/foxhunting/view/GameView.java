@@ -29,15 +29,21 @@ public class GameView {
         this.foxesTextView = (TextView) activity.findViewById(R.id.foxes_text);
         this.powerTextView = (TextView) activity.findViewById(R.id.power_text);
         this.scoreTextView = (TextView) activity.findViewById(R.id.score_text);
+
+        updateStatistic();
     }
 
     public void updateView() {
+        updateStatistic();
+        this.gameAreaView.updateView();
+    }
+
+    private void updateStatistic() {
         this.levelTextView.setText(gameModel.level + "");
         this.foxesTextView.setText(gameModel.huntedFoxes + " / "
-                              + gameModel.foxes);
+                + gameModel.foxes);
         this.powerTextView.setText(gameModel.power + "");
         this.scoreTextView.setText(gameModel.score + "");
-        this.gameAreaView.updateView();
     }
 
     public void setGameAreaFieldClickListener(

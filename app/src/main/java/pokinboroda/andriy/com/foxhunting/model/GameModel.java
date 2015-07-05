@@ -1,12 +1,13 @@
 package pokinboroda.andriy.com.foxhunting.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by andriy on 05.07.15.
  */
-public class GameModel {
+public class GameModel implements Serializable {
     public static final int LEVEL_DEFAULT = 1;
     public static final int FOXES_DEFAULT = 3;
     public static final int HUNTED_FOXES_DEFAULT = 0;
