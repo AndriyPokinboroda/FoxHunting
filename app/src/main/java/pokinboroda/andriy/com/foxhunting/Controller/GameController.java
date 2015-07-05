@@ -198,12 +198,6 @@ public class GameController {
                 AlertDialog.Builder alertDialog = new AlertDialog
                         .Builder(activity);
 
-//                final View dialogLayout = activity.getLayoutInflater()
-//                        .inflate(R.layout.dialog_enter_name, null);
-//
-//                if (scoreList.getWorstScore().getScore() < score)
-//                    alertDialog.setView(dialogLayout);
-
                 alertDialog
                         .setTitle(R.string.lose_message)
                         .setPositiveButton(R.string.new_game_button, null)
@@ -218,16 +212,6 @@ public class GameController {
                         .setOnDismissListener(new DialogInterface.OnDismissListener() {
                             @Override
                             public void onDismiss(DialogInterface dialog) {
-
-//                                if (scoreList.getWorstScore().getScore() < score) {
-//                                    String name = ((EditText) dialogLayout.findViewById(R.id.name_edit)).getText().toString();
-//                                    name = (name.equals("")) ? "Unknown player" : name;
-//
-//                                    scoreList.addScore(new ScoreItem(score, level, name));
-//                                }
-//
-//                                setToDefaults();
-
                                 newGame();
                             }
                         })
