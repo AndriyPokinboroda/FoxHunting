@@ -115,6 +115,8 @@ public class GameActivity extends AppCompatActivity {
                             ScoreActivity.class));
                     break;
                 case 1 : // Rules
+                    startActivity(new Intent(GameActivity.this,
+                            RulesActivity.class));
                     break;
                 case 2 : // About
                     drawerLayout.closeDrawer(Gravity.LEFT);

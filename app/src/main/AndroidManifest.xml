@@ -24,6 +24,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="pokinboroda.andriy.com.foxhunting.GameActivity" />
         </activity>
+        <activity
+            android:name=".RulesActivity"
+            android:label="@string/title_activity_rules"
+            android:parentActivityName=".GameActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pokinboroda.andriy.com.foxhunting.GameActivity" />
+        </activity>
     </application>
 
 </manifest>
