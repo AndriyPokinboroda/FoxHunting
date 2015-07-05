@@ -1,31 +1,167 @@
-<!-- A DrawerLayout is intended to be used as the top-level content view using match_parent for both width and height to consume the full space available. -->
+<?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GameActivity">
-
-    <!-- As the main content view, the view below consumes the entire
-         space available using match_parent in both dimensions. -->
-    <FrameLayout
-        android:id="@+id/container"
+    android:id="@+id/drawer_layout">
+    <!-- main content view -->
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:padding="5dp"
+        tools:context=".GameActivity"
+        android:background="@color/background"
+        android:orientation="vertical"
+        >
 
-    <!-- android:layout_gravity="start" tells DrawerLayout to treat
-         this as a sliding drawer on the left side for left-to-right
-         languages and on the right side for right-to-left languages.
-         If you're not building against API 17 or higher, use
-         android:layout_gravity="left" instead. -->
-    <!-- The drawer is given a fixed width in dp and extends the full height of
-         the container. -->
-    <fragment android:id="@+id/navigation_drawer"
-              android:layout_width="@dimen/navigation_drawer_width"
-              android:layout_height="match_parent"
-              android:layout_gravity="start"
-              android:name="pokinboroda.andriy.com.foxhunting.NavigationDrawerFragment"
-              tools:layout="@layout/fragment_navigation_drawer"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentTop="true">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="2px"
+                android:background="@drawable/background_box">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="25sp"
+                    android:text="@string/level_label"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="25sp"
+                    android:id="@+id/level_text"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="2px"
+                android:background="@drawable/background_box">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="25sp"
+                    android:text="@string/foxes_label"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="25sp"
+                    android:id="@+id/foxes_text"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="2px"
+                android:background="@drawable/background_box">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="25sp"
+                    android:text="@string/power_label"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="25sp"
+                    android:id="@+id/power_text"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="2px"
+                android:background="@drawable/background_box">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="25sp"
+                    android:text="@string/score_label"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="25sp"
+                    android:id="@+id/score_text"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/new_game_button"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="10dp"
+                android:textSize="25sp"
+                android:onClick="newGame"/>
+        </RelativeLayout>
+
+
+        <GridView
+            android:id="@+id/play_area_grid"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="10"
+            android:stretchMode="columnWidth"
+            android:gravity="center_horizontal"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/background_game_area" />
+
+    </LinearLayout>
+
+
+    <ListView
+        android:id="@+id/drawer_list"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:background="@color/background"/>
 
 </android.support.v4.widget.DrawerLayout>

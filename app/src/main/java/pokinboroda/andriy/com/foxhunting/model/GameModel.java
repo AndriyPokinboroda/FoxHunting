@@ -29,8 +29,8 @@ public class GameModel {
         List<GameAreaField> listFields = new ArrayList<>();
 
         for (int i = 0; i < AREA_DIMENSION; i++) {
-            for (int j = 0; j < AREA_DIMENSION; i++) {
-                listFields.add(fields[i][j]);
+            for (int j = 0; j < AREA_DIMENSION; j++) {
+                listFields.add(fields[j][i]);
             }
         }
 

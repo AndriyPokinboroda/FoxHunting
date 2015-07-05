@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/item_image"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>
 
@@ -18,6 +18,6 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:textSize="20dp"/>
+        android:textSize="40dp"/>
 
 </RelativeLayout>
