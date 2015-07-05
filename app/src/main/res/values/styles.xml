@@ -2,7 +2,16 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <item name="colorPrimaryDark">@color/status_bar</item>
+        <item name="colorPrimary">@color/action_bar</item>
     </style>
+
+    <!-- Color gamma -->
+    <color name="status_bar">#f9a825</color>
+    <color name="action_bar">#fbc02d</color>
+    <color name="background">#fffde7</color>
+    <color name="box_background">#fff176</color>
+    <color name="game_area_background">#fff9c4</color>
+    <color name="font_color">#000</color>
 
 </resources>
