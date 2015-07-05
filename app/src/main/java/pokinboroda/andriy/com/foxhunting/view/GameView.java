@@ -23,25 +23,25 @@ public class GameView {
     public GameView(Activity activity, GameModel gameModel) {
         this.activity = activity;
         this.gameModel = gameModel;
-        this.gameAreaView = new GameAreaView(activity);
+        this.gameAreaView = new GameAreaView(activity, gameModel);
 
-        levelTextView = (TextView) activity.findViewById(R.id.level_text);
-        foxesTextView = (TextView) activity.findViewById(R.id.foxes_text);
-        powerTextView = (TextView) activity.findViewById(R.id.power_text);
-        scoreTextView = (TextView) activity.findViewById(R.id.score_text);
+        this.levelTextView = (TextView) activity.findViewById(R.id.level_text);
+        this.foxesTextView = (TextView) activity.findViewById(R.id.foxes_text);
+        this.powerTextView = (TextView) activity.findViewById(R.id.power_text);
+        this.scoreTextView = (TextView) activity.findViewById(R.id.score_text);
     }
 
     public void updateView() {
-        levelTextView.setText(gameModel.level + "");
-        foxesTextView.setText(gameModel.huntedFoxes + " / "
+        this.levelTextView.setText(gameModel.level + "");
+        this.foxesTextView.setText(gameModel.huntedFoxes + " / "
                               + gameModel.foxes);
-        powerTextView.setText(gameModel.power + "");
-        scoreTextView.setText(gameModel.score + "");
-        gameAreaView.updateView(gameModel.getGameAreaFields());
+        this.powerTextView.setText(gameModel.power + "");
+        this.scoreTextView.setText(gameModel.score + "");
+        this.gameAreaView.updateView();
     }
 
     public void setGameAreaFieldClickListener(
             AdapterView.OnItemClickListener clickListener) {
-        gameAreaView.setOnFieldClickListener(clickListener);
+        this.gameAreaView.setOnFieldClickListener(clickListener);
     }
 }

@@ -10,6 +10,7 @@ public class GameAreaField {
     public static final int ICON_TREE = R.drawable.icon_tree;
     public static final int ICON_BLANK = R.color.game_area_background;
     public static final int FIELD_FOX = -1;
+    public static final int FIELD_ZERO = 0;
 
     public enum States {
         HIDDEN,
@@ -27,33 +28,37 @@ public class GameAreaField {
 
     public GameAreaField(int value, States itemState) {
         this.value = value;
-        this.currentState = itemState;
 
-        changeState(itemState);
+        setState(itemState);
     }
 
-    public void changeState(States itemState) {
+    public void setState(States newState) {
+        this.currentState = newState;
 
-        if (itemState == States.HIDDEN) {
+        if (newState == States.HIDDEN) {
             text = "";
-            imageResource = ICON_TREE;
+            this.imageResource = ICON_TREE;
         } else {
             if (value == FIELD_FOX) {
-                text = "";
-                imageResource = ICON_FOX;
+                this.text = "";
+                this.imageResource = ICON_FOX;
             } else {
-                text = value + "";
-                imageResource = ICON_BLANK;
+                this.text = value + "";
+                this.imageResource = ICON_BLANK;
             }
         }
+    }
+
+    public States getState() {
+        return currentState;
     }
 
     public void setValue(int newValue) {
         this.value = newValue;
 
-        if (currentState == States.SHOWED) {
+        if (this.currentState == States.SHOWED) {
             /* Refresh text and imageResource variables */
-            changeState(States.SHOWED);
+            setState(States.SHOWED);
         }
     }
 

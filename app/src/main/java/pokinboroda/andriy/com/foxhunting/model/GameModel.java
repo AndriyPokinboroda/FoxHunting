@@ -24,13 +24,12 @@ public class GameModel {
 
     public GameAreaField[][] fields;
 
-
     public List<GameAreaField> getGameAreaFields() {
         List<GameAreaField> listFields = new ArrayList<>();
 
         for (int i = 0; i < AREA_DIMENSION; i++) {
             for (int j = 0; j < AREA_DIMENSION; j++) {
-                listFields.add(fields[j][i]);
+                listFields.add(this.fields[j][i]);
             }
         }
 

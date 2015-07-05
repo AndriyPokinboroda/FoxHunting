@@ -43,10 +43,129 @@ public class GameController {
         this.gameView.setGameAreaFieldClickListener(new OnFieldClickListener());
     }
 
+    private class OnFieldClickListener implements OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view,
+                                int position, long id) {
+            GameAreaField field = gameModel
+                    .fields[positionToX(position)][positionToY(position)];
+            field.setState(GameAreaField.States.SHOWED);
+
+            if (field.getValue() == GameAreaField.FIELD_FOX) {
+                gameModel.score += GameModel.SCORE_BONUS;
+                gameModel.huntedFoxes++;
+                gameModel.power++;
+            } else {
+                if (field.getValue() == GameAreaField.FIELD_ZERO) {
+                    showCompatibleFields(positionToX(position),
+                                         positionToY(position));
+                }
+                gameModel.score += field.getValue();
+                gameModel.power--;
+            }
+
+            gameView.updateView();
+
+            if (isWin()) {
+                win();
+            } else if (isLose()) {
+                lose();
+            }
+        }
+    }
+
+    private boolean isWin() {
+        return (gameModel.foxes <= gameModel.huntedFoxes);
+    }
+
+    private boolean isLose() {
+        return (gameModel.power <= 0);
+    }
+
+    private void win() {
+        gameView.setGameAreaFieldClickListener(null);
+
+        new AlertDialog.Builder(activity)
+                .setMessage(R.string.level_up_message)
+                .setPositiveButton(R.string.continue_button, null)
+                .setNegativeButton(R.string.exit_button,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+                                activity.finish();
+                            }
+                        })
+                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                levelUp();
+                            }
+                        })
+                .setCancelable(false)
+                .create()
+                .show();
+
+    }
+
+    private void lose() {
+        gameView.setGameAreaFieldClickListener(null);
+
+        AlertDialog.Builder alertDialog = new AlertDialog
+                .Builder(activity);
+
+        alertDialog
+                .setTitle(R.string.lose_message)
+                .setPositiveButton(R.string.new_game_button, null)
+                .setNegativeButton(R.string.exit_button,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+                                activity.finish();
+                            }
+                        })
+                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                newGame();
+                            }
+                        })
+                .setCancelable(false)
+                .create()
+                .show();
+    }
+
+    private void levelUp() {
+        gameModel.level++;
+        gameModel.power = GameModel.POWER_DEFAULT;
+        gameModel.foxes++;
+        gameModel.huntedFoxes = GameModel.HUNTED_FOXES_DEFAULT;
+
+        gameView.updateView();
+        gameView.setGameAreaFieldClickListener(new OnFieldClickListener());
+    }
+
+    private void newGame() {
+        initializeGameModel();
+
+        gameView.updateView();
+        gameView.setGameAreaFieldClickListener(new OnFieldClickListener());
+
+    }
     private void initializeGameModel() {
         setModelDefaults();
 
         initializeGameAreaFields();
+    }
+
+    private void setModelDefaults() {
+        gameModel.level = GameModel.LEVEL_DEFAULT;
+        gameModel.power = GameModel.POWER_DEFAULT;
+        gameModel.score = GameModel.SCORE_DEFAULT;
+        gameModel.foxes = GameModel.FOXES_DEFAULT;
+        gameModel.huntedFoxes = GameModel.HUNTED_FOXES_DEFAULT;
     }
 
     private void initializeGameAreaFields() {
@@ -61,7 +180,7 @@ public class GameController {
                 gameModel.fields[i][j] = new GameAreaField(0);
             }
         }
-
+        /* Set foxes */
         Random random = new Random();
 
         for (int i = 0; i < gameModel.foxes; i++) {
@@ -133,8 +252,44 @@ public class GameController {
         }
     }
 
-    private int XYToPosition(int x, int y) {
-        return (y == 0) ? x : y * GameModel.AREA_DIMENSION + x;
+    private void showCompatibleFields(int xCoordinate, int yCoordinate) {
+        int dimension = GameModel.AREA_DIMENSION;
+        int x;
+        int y;
+
+        /* open vertical and horizontal */
+        for (int k = 0; k < dimension; k++) {
+            if (k != xCoordinate) {
+                gameModel.fields[k][yCoordinate]
+                        .setState(GameAreaField.States.SHOWED);
+            }
+            if (k != yCoordinate) {
+                gameModel.fields[xCoordinate][k]
+                        .setState(GameAreaField.States.SHOWED);
+            }
+        }
+
+        /* open diagonals */
+        /* left top part */
+        for (x = xCoordinate - 1, y = yCoordinate - 1; x >= 0 && y >= 0;
+             x--, y--) {
+            gameModel.fields[x][y].setState(GameAreaField.States.SHOWED);
+        }
+        /* right top part */
+        for (x = xCoordinate + 1, y = yCoordinate - 1; x < dimension && y >= 0;
+             x++, y--) {
+            gameModel.fields[x][y].setState(GameAreaField.States.SHOWED);
+        }
+        /* left bottom part */
+        for (x = xCoordinate - 1, y = yCoordinate + 1; x >= 0 && y < dimension;
+             x--, y++) {
+            gameModel.fields[x][y].setState(GameAreaField.States.SHOWED);
+        }
+        /* right bottom part */
+        for (x = xCoordinate + 1, y = yCoordinate + 1;
+             x < dimension && y < dimension; x++, y++) {
+            gameModel.fields[x][y].setState(GameAreaField.States.SHOWED);
+        }
     }
 
     private int positionToY(int position) {
@@ -143,107 +298,7 @@ public class GameController {
     }
 
     private int positionToX(int position) {
-        return (position < gameModel.AREA_DIMENSION)
+        return (position < GameModel.AREA_DIMENSION)
                 ? position : position % GameModel.AREA_DIMENSION;
-    }
-
-    private class OnFieldClickListener implements OnItemClickListener {
-
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view,
-                                int position, long id) {
-            GameAreaField field = gameModel
-                    .fields[positionToX(position)][positionToY(position)];
-            field.changeState(GameAreaField.States.SHOWED);
-
-            if (field.getValue() == GameAreaField.FIELD_FOX) {
-                gameModel.score += GameModel.SCORE_BONUS;
-                gameModel.huntedFoxes++;
-                gameModel.power++;
-            } else {
-                gameModel.score += field.getValue();
-                gameModel.power--;
-            }
-
-            gameView.updateView();
-
-            if (gameModel.foxes <= gameModel.huntedFoxes) { // win
-                gameView.setGameAreaFieldClickListener(null);
-
-                new AlertDialog.Builder(activity)
-                        .setMessage(R.string.level_up_message)
-                        .setPositiveButton(R.string.continue_button, null)
-                        .setNegativeButton(R.string.exit_button,
-                                new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                                int which) {
-                                activity.finish();
-                            }
-                        })
-                        .setOnDismissListener(new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
-                                levelUp();
-                            }
-                        })
-                        .setCancelable(false)
-                        .create()
-                        .show();
-
-            } else if (gameModel.power <= 0) { // lose
-                gameView.setGameAreaFieldClickListener(null);
-
-                AlertDialog.Builder alertDialog = new AlertDialog
-                        .Builder(activity);
-
-                alertDialog
-                        .setTitle(R.string.lose_message)
-                        .setPositiveButton(R.string.new_game_button, null)
-                        .setNegativeButton(R.string.exit_button,
-                                new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                                int which) {
-                                activity.finish();
-                            }
-                        })
-                        .setOnDismissListener(new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
-                                newGame();
-                            }
-                        })
-                        .setCancelable(false)
-                        .create()
-                        .show();
-            }
-        }
-    }
-
-    private void levelUp() {
-        gameModel.level++;
-        gameModel.power = GameModel.POWER_DEFAULT;
-        gameModel.foxes++;
-        gameModel.huntedFoxes = GameModel.HUNTED_FOXES_DEFAULT;
-
-        gameView.updateView();
-        gameView.setGameAreaFieldClickListener(new OnFieldClickListener());
-    }
-
-    private void newGame() {
-        setModelDefaults();
-
-        gameView.updateView();
-        gameView.setGameAreaFieldClickListener(new OnFieldClickListener());
-
-    }
-
-    private void setModelDefaults() {
-        gameModel.level = GameModel.LEVEL_DEFAULT;
-        gameModel.power = GameModel.POWER_DEFAULT;
-        gameModel.score = GameModel.SCORE_DEFAULT;
-        gameModel.foxes = GameModel.FOXES_DEFAULT;
-        gameModel.huntedFoxes = GameModel.HUNTED_FOXES_DEFAULT;
     }
 }
