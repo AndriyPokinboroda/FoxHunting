@@ -64,4 +64,7 @@
         постріл додає сил.
     </string>
 
+    <!-- Error -->
+    <string name="internal_error">INTERNAL_ERROR</string>
+
 </resources>

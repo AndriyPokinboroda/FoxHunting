@@ -1,4 +1,4 @@
-package pokinboroda.andriy.com.foxhunting;
+package com.pokinboroda.andriy.foxhunting;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,17 +15,22 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import pokinboroda.andriy.com.foxhunting.score.ScoreItem;
-import pokinboroda.andriy.com.foxhunting.score.ScoreList;
+import com.pokinboroda.andriy.foxhunting.score.ScoreItem;
+import com.pokinboroda.andriy.foxhunting.score.ScoreList;
+
+import pokinboroda.andriy.com.foxhunting.R;
 
 
+/**
+ * The type Score activity.
+ */
 public class ScoreActivity extends AppCompatActivity {
 
     private ListView listView;
     private ScoreList scoreList;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score);
 
@@ -40,7 +45,7 @@ public class ScoreActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public final boolean onCreateOptionsMenu(final Menu menu) {
         // Inflate the menu items for use in the action bar
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_score, menu);
@@ -48,7 +53,7 @@ public class ScoreActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public final boolean onOptionsItemSelected(final MenuItem item) {
         // Handle presses on the action bar items
         if (item.getItemId() == R.id.action_delete) {
             scoreList.deleteScoreList();
@@ -63,10 +68,17 @@ public class ScoreActivity extends AppCompatActivity {
         private int resourceId;
         private List<ScoreItem> scoreList;
 
-        public ScoreRecordAdapter(Context context, int resource,
-                                  List<ScoreItem> objects) {
-            super(context, resource, objects);
-            this.context = context;
+        /**
+         * Instantiates a new Score record adapter.
+         *
+         * @param mContext the m context
+         * @param resource the resource
+         * @param objects the objects
+         */
+        public ScoreRecordAdapter(final Context mContext, final int resource,
+                                  final List<ScoreItem> objects) {
+            super(mContext, resource, objects);
+            this.context = mContext;
             this.resourceId = resource;
             this.scoreList = objects;
         }
@@ -77,7 +89,8 @@ public class ScoreActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View view, ViewGroup parent) {
+        public View getView(final int position, View view,
+                            final ViewGroup parent) {
             view = ((Activity) context).getLayoutInflater()
                     .inflate(resourceId, parent, false);
 

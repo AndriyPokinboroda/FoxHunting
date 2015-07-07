@@ -1,4 +1,4 @@
-package pokinboroda.andriy.com.foxhunting.Controller;
+package com.pokinboroda.andriy.foxhunting.controller;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,65 +11,107 @@ import android.widget.EditText;
 import java.util.Random;
 
 import pokinboroda.andriy.com.foxhunting.R;
-import pokinboroda.andriy.com.foxhunting.model.GameAreaField;
-import pokinboroda.andriy.com.foxhunting.model.GameModel;
-import pokinboroda.andriy.com.foxhunting.score.ScoreItem;
-import pokinboroda.andriy.com.foxhunting.score.ScoreList;
-import pokinboroda.andriy.com.foxhunting.view.GameView;
-
+import com.pokinboroda.andriy.foxhunting.model.GameAreaField;
+import com.pokinboroda.andriy.foxhunting.model.GameModel;
+import com.pokinboroda.andriy.foxhunting.score.ScoreItem;
+import com.pokinboroda.andriy.foxhunting.score.ScoreList;
+import com.pokinboroda.andriy.foxhunting.view.GameView;
 
 /**
- * Created by andriy on 05.07.15.
+ * This class bind {@code GameModel} and {@code GameView}, manage their
+ * compatible work. Also this class add {@code ItemScore} to {@code ScoreList}.
+ *
+ * @author Pokinboroda Andriy
+ * @version 0.1
+ * @see com.pokinboroda.andriy.foxhunting.model.GameModel
+ * @see com.pokinboroda.andriy.foxhunting.view.GameView
+ * @see com.pokinboroda.andriy.foxhunting.score
  */
 public class GameController {
 
+    /** Game activity. */
     private Activity activity;
 
+    /** Model of fox hunting game. */
     private GameModel gameModel;
+
+    /** View of fox hunting game. */
     private GameView gameView;
+
+    /** Game score list. */
     private ScoreList scoreList;
 
-    public GameController(Activity activity, ScoreList scoreList) {
-        this.activity = activity;
+    /** Constructor what generate new {@link GameModel}.
+     *
+     * @param mActivity instance of game activity
+     * @param mScoreList instance of scores list
+     */
+    public GameController(final Activity mActivity,
+                          final ScoreList mScoreList) {
+        this.activity = mActivity;
         this.gameModel = new GameModel();
-        this.scoreList = scoreList;
+        this.scoreList = mScoreList;
 
         initializeGameModel();
 
         this.gameView = new GameView(activity, gameModel);
         this.gameView.updateView();
-        this.gameView.setGameAreaFieldClickListener(new OnFieldClickListener());
+        this.gameView.setGameAreaFieldClickListener(
+                new OnFieldOnClickListener());
         this.gameView.setNewGameButtonClickListener(
                 new NewGameOnClickListener());
     }
 
-    public GameController(Activity activity,ScoreList scoreList,
-                          GameModel gameModel) {
-        this.activity = activity;
-        this.gameModel = gameModel;
-        this.scoreList = scoreList;
-        this.gameView = new GameView(activity,gameModel);
-        this.gameView.setGameAreaFieldClickListener(new OnFieldClickListener());
-        this.gameView.setNewGameButtonClickListener(new NewGameOnClickListener());
+    /** Constructor what use saved {@link GameModel}.
+     *
+     * @param mActivity instance of game activity
+     * @param mScoreList instance of scores list
+     * @param mGameModel instance of saved
+     */
+    public GameController(final Activity mActivity, final ScoreList mScoreList,
+                          final GameModel mGameModel) {
+        this.activity = mActivity;
+        this.gameModel = mGameModel;
+        this.scoreList = mScoreList;
+        this.gameView = new GameView(activity, gameModel);
+        this.gameView.setGameAreaFieldClickListener(
+                new OnFieldOnClickListener());
+        this.gameView.setNewGameButtonClickListener(
+                new NewGameOnClickListener());
     }
 
-    public GameModel getGameModel() {
+    /**
+     * Gets game model.
+     *
+     * @return current state of
+     */
+    public final GameModel getGameModel() {
         return this.gameModel;
     }
 
+
+    /**
+     * Class implement {@link android.view.View.OnClickListener}
+     * so can handle click to view. Basically create new game.
+     */
     private class NewGameOnClickListener implements View.OnClickListener {
 
         @Override
-        public void onClick(View v) {
+        public void onClick(final View v) {
             newGame();
         }
     }
 
-    private class OnFieldClickListener implements OnItemClickListener {
+
+    /**
+     * Class handle field on click event.
+     * Basically manage all playing process.
+     */
+    private class OnFieldOnClickListener implements OnItemClickListener {
 
         @Override
-        public void onItemClick(AdapterView<?> parent, View view,
-                                int position, long id) {
+        public void onItemClick(final AdapterView<?> parent, final View view,
+                                final int position, final long id) {
             GameAreaField field = gameModel
                     .fields[positionToX(position)][positionToY(position)];
             field.setState(GameAreaField.States.SHOWED);
@@ -83,6 +125,7 @@ public class GameController {
                     showCompatibleFields(positionToX(position),
                                          positionToY(position));
                 }
+
                 gameModel.score += field.getValue();
                 gameModel.power--;
             }
@@ -97,14 +140,21 @@ public class GameController {
         }
     }
 
+    /** @return {@code true} if player win the game, otherwise {@code false} */
     private boolean isWin() {
         return (gameModel.foxes <= gameModel.huntedFoxes);
     }
 
+    /** @return {@code true} if player lose the game, otherwise {@code false} */
     private boolean isLose() {
         return (gameModel.power <= 0);
     }
 
+    /**
+     * This method should be called if player win the game.
+     * In general show dialog with level completion message and offer new level,
+     * if answer is positive generate new level.
+     */
     private void win() {
         gameView.setGameAreaFieldClickListener(null);
 
@@ -114,14 +164,15 @@ public class GameController {
                 .setNegativeButton(R.string.exit_button,
                         new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog,
-                                                int which) {
+                            public void onClick(final DialogInterface dialog,
+                                                final int which) {
                                 activity.finish();
                             }
                         })
                 .setOnDismissListener(new DialogInterface.OnDismissListener() {
                             @Override
-                            public void onDismiss(DialogInterface dialog) {
+                            public void onDismiss(
+                                    final DialogInterface dialog) {
                                 levelUp();
                             }
                         })
@@ -131,6 +182,13 @@ public class GameController {
 
     }
 
+    /**
+     * This method should be called if player lose the game.
+     * In general show dialog with lose message and offer new game,
+     * if answer is positive generate new game.
+     * Also if score of the current game in top best, what determined by
+     * {@link ScoreList}, ask player name to save the score.
+     */
     private void lose() {
         gameView.setGameAreaFieldClickListener(null);
 
@@ -150,14 +208,16 @@ public class GameController {
                 .setNegativeButton(R.string.exit_button,
                         new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog,
-                                                int which) {
+                            public void onClick(final DialogInterface dialog,
+                                                final int which) {
                                 activity.finish();
                             }
                         })
                 .setOnDismissListener(new DialogInterface.OnDismissListener() {
                             @Override
-                            public void onDismiss(DialogInterface dialog) {
+                            public void onDismiss(
+                                    final DialogInterface dialog) {
+
                                 if (scoreList.getWorstScore().getScore()
                                         < gameModel.score) {
                                     String name = ((EditText) dialogLayout
@@ -181,6 +241,7 @@ public class GameController {
                 .show();
     }
 
+    /** Prepare {@link GameModel} to new level and update {@link GameView}. */
     private void levelUp() {
         gameModel.level++;
         gameModel.power = GameModel.POWER_DEFAULT;
@@ -190,22 +251,26 @@ public class GameController {
         initializeGameAreaFields();
 
         gameView = new GameView(activity, gameModel);
-        gameView.setGameAreaFieldClickListener(new OnFieldClickListener());
+        gameView.setGameAreaFieldClickListener(new OnFieldOnClickListener());
     }
 
+    /**
+     * Set {@link GameModel} to default state, generate new game field
+     * and update {@link GameView}.
+     */
     private void newGame() {
         initializeGameModel();
 
         gameView = new GameView(activity, gameModel);
-        gameView.setGameAreaFieldClickListener(new OnFieldClickListener());
+        gameView.setGameAreaFieldClickListener(new OnFieldOnClickListener());
 
     }
+    /** Set {@link GameModel} to default state, generate new game field. */
     private void initializeGameModel() {
         setModelDefaults();
-
         initializeGameAreaFields();
     }
-
+    /** Set statistic fields from {@link GameModel} to default state. */
     private void setModelDefaults() {
         gameModel.level = GameModel.LEVEL_DEFAULT;
         gameModel.power = GameModel.POWER_DEFAULT;
@@ -214,6 +279,13 @@ public class GameController {
         gameModel.huntedFoxes = GameModel.HUNTED_FOXES_DEFAULT;
     }
 
+    /**
+     * Initialize fields from {@link GameModel}.
+     * Basically, create new 2D array,
+     * place in random way foxes, their count determine by {@link GameModel}
+     * field {@code foxes} and appropriate to foxes placement calculate
+     * each field value.
+     */
     private void initializeGameAreaFields() {
         int dimension = GameModel.AREA_DIMENSION;
         gameModel.fields = new GameAreaField[dimension][dimension];
@@ -298,7 +370,16 @@ public class GameController {
         }
     }
 
-    private void showCompatibleFields(int xCoordinate, int yCoordinate) {
+    /**
+     * This method should be called when zero fields is open.
+     * Open fields what place in horizontal, vertical and diagonal line with
+     * opened zero field.
+     *
+     * @param xCoordinate x coordinate of zero field
+     * @param yCoordinate y coordinate of zero field
+     */
+    private void showCompatibleFields(final int xCoordinate,
+                                      final int yCoordinate) {
         int dimension = GameModel.AREA_DIMENSION;
         int x;
         int y;
@@ -317,18 +398,18 @@ public class GameController {
 
         /* open diagonals */
         /* left top part */
-        for (x = xCoordinate - 1, y = yCoordinate - 1; x >= 0 && y >= 0;
-             x--, y--) {
+        for (x = xCoordinate - 1, y = yCoordinate - 1;
+             x >= 0 && y >= 0; x--, y--) {
             gameModel.fields[x][y].setState(GameAreaField.States.SHOWED);
         }
         /* right top part */
-        for (x = xCoordinate + 1, y = yCoordinate - 1; x < dimension && y >= 0;
-             x++, y--) {
+        for (x = xCoordinate + 1, y = yCoordinate - 1;
+             x < dimension && y >= 0; x++, y--) {
             gameModel.fields[x][y].setState(GameAreaField.States.SHOWED);
         }
         /* left bottom part */
-        for (x = xCoordinate - 1, y = yCoordinate + 1; x >= 0 && y < dimension;
-             x--, y++) {
+        for (x = xCoordinate - 1, y = yCoordinate + 1;
+             x >= 0 && y < dimension; x--, y++) {
             gameModel.fields[x][y].setState(GameAreaField.States.SHOWED);
         }
         /* right bottom part */
@@ -338,13 +419,29 @@ public class GameController {
         }
     }
 
-    private int positionToY(int position) {
+    /**
+     * This method and {@code positionToX()} method created for adapt GridView
+     * indexing system to {@link GameModel} 2D indexing system.
+     *
+     * @param position GridView item position
+     * @return y coordinate in {@link GameModel} indexing system.
+     */
+    private int positionToY(final int position) {
         return (position < GameModel.AREA_DIMENSION)
-                ? 0 : (int) Math.floor(position / GameModel.AREA_DIMENSION);
+                ? 0
+                : (int) Math.floor(position / GameModel.AREA_DIMENSION);
     }
 
-    private int positionToX(int position) {
+    /**
+     * This method and {@code positionToY()} method created for adapt GridView
+     * indexing system to {@link GameModel} 2D indexing system.
+     *
+     * @param position GridView item position
+     * @return x coordinate in {@link GameModel} indexing system.
+     */
+    private int positionToX(final int position) {
         return (position < GameModel.AREA_DIMENSION)
-                ? position : position % GameModel.AREA_DIMENSION;
+                ? position
+                : position % GameModel.AREA_DIMENSION;
     }
 }

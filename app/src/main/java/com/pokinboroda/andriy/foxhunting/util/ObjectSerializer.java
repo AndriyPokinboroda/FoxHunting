@@ -1,4 +1,4 @@
-package pokinboroda.andriy.com.foxhunting.util;
+package com.pokinboroda.andriy.foxhunting.util;
 
 import android.content.Context;
 
@@ -9,10 +9,22 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class ObjectSerializer {
+/**
+ * The type Object serializer.
+ */
+public final class ObjectSerializer {
     private ObjectSerializer() { }
 
-    public static <T> T deserializeFromFile(Context context, String fileName) {
+    /**
+     * Deserialize from file.
+     *
+     * @param <T>  the type parameter
+     * @param context the context
+     * @param fileName the file name
+     * @return the t
+     */
+    public static <T> T deserializeFromFile(final Context context,
+                                            final String fileName) {
         ObjectInputStream input = null;
         try {
             input = new ObjectInputStream(new FileInputStream(
@@ -31,8 +43,18 @@ public class ObjectSerializer {
         }
     }
 
-    public static <T> boolean serializeToFile(Context context, String fileName,
-                                              T object) {
+    /**
+     * Serialize to file.
+     *
+     * @param <T>  the type parameter
+     * @param context the context
+     * @param fileName the file name
+     * @param object the object
+     * @return the boolean
+     */
+    public static <T> boolean serializeToFile(final Context context,
+                                              final String fileName,
+                                              final T object) {
         ObjectOutputStream output = null;
         try {
             output = new ObjectOutputStream(new FileOutputStream(

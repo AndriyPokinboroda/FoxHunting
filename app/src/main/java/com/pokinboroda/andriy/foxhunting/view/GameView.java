@@ -1,13 +1,12 @@
-package pokinboroda.andriy.com.foxhunting.view;
+package com.pokinboroda.andriy.foxhunting.view;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
 import pokinboroda.andriy.com.foxhunting.R;
-import pokinboroda.andriy.com.foxhunting.model.GameModel;
+import com.pokinboroda.andriy.foxhunting.model.GameModel;
 
 /**
  * Created by andriy on 05.07.15.
@@ -23,6 +22,12 @@ public class GameView {
     private GameModel gameModel;
     private GameAreaView gameAreaView;
 
+    /**
+     * Instantiates a new Game view.
+     *
+     * @param activity the activity
+     * @param gameModel the game model
+     */
     public GameView(Activity activity, GameModel gameModel) {
         this.activity = activity;
         this.gameModel = gameModel;
@@ -38,6 +43,9 @@ public class GameView {
         updateStatistic();
     }
 
+    /**
+     * Update view.
+     */
     public void updateView() {
         updateStatistic();
         this.gameAreaView.updateView();
@@ -51,11 +59,21 @@ public class GameView {
         this.scoreTextView.setText(gameModel.score + "");
     }
 
+    /**
+     * Sets game area field click listener.
+     *
+     * @param clickListener the click listener
+     */
     public void setGameAreaFieldClickListener(
             AdapterView.OnItemClickListener clickListener) {
         this.gameAreaView.setOnFieldClickListener(clickListener);
     }
 
+    /**
+     * Sets new game button click listener.
+     *
+     * @param clickListener the click listener
+     */
     public void setNewGameButtonClickListener(
             View.OnClickListener clickListener) {
         newGameButton.setOnClickListener(clickListener);
