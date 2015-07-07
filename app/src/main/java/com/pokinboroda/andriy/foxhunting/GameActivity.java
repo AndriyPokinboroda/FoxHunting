@@ -24,17 +24,78 @@ import pokinboroda.andriy.com.foxhunting.R;
 
 
 /**
- * The type Game activity.
+ * The GameActivity is the main activity. On this activity pass over the game.
+ * Basically this activity just instantiate {@link GameController}
+ * what manage exactly the game. This class save and restore game model
+ * and save to file the score.
+ *
+ * @author Pokinboroda Andriy
+ * @version 0.1
  */
 public class GameActivity extends AppCompatActivity {
+
+    /** Name of file what store {@link GameModel} state. */
     private static final String GAME_MODEL_FILE = "/gameModel.obj";
 
-    /* Drawer */
+    /** Represent items of side menu. */
+    public enum MenuItems {
+
+        /** Score item. */
+        SCORE(0),
+
+        /** Rules item. */
+        RULES(1),
+
+        /** About item. */
+        ABOUT(2),
+
+        /** Exit item. */
+        EXIT(3);
+
+        /** Position of item. */
+        private int position;
+
+        /** Constructor with initialize item by position.
+         *
+         * @param mPosition position of item */
+        MenuItems(final int mPosition) {
+            this.position = mPosition;
+        }
+
+        /**
+         * Return menu item appropriate to position.
+         *
+         * @param mPosition item position
+         * @return menu item, if item with this position does not exist
+         *         return EXIT item
+         */
+        public static MenuItems getItemByPosition(final int mPosition) {
+            for (MenuItems item : MenuItems.values()) {
+                if (item.position == mPosition) {
+                    return item;
+                }
+            }
+
+            return MenuItems.EXIT;
+        }
+    }
+
+    /** Represent drawer menu items list. */
     private ListView menuList;
+
+    /**
+     * Use to make the button on action bar
+     * act like toggle for side menu(Open/Close).
+     */
     private ActionBarDrawerToggle drawerToggle;
+
+    /** Drawer layout for side menu. */
     private DrawerLayout drawerLayout;
 
+    /** Game score list. */
     private ScoreList scoreList;
+
+    /** Game controller for fox hunting game. */
     private GameController gameController;
 
     @Override
@@ -57,8 +118,8 @@ public class GameActivity extends AppCompatActivity {
     }
 
     @Override
-    protected final void onStop() {
-        super.onStop();
+    protected final void onPause() {
+        super.onPause();
 
         scoreList.saveToFile();
 
@@ -81,7 +142,7 @@ public class GameActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /* Drawer side menu */
+    /** Method what configure drawer menu. */
     private void createDrawerMenu() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -111,23 +172,26 @@ public class GameActivity extends AppCompatActivity {
         menuList.setOnItemClickListener(new DrawerItemClickListener());
     }
 
+
+    /** Class for handling side menu items click. */
     private class DrawerItemClickListener
             implements ListView.OnItemClickListener {
 
         @Override
         public void onItemClick(final AdapterView<?> parent, final View view,
                                 final int position, final long id) {
+            MenuItems chooseItem = MenuItems.getItemByPosition(position);
 
-            switch (position) {
-            case 0 : // Score
+            switch (chooseItem) {
+            case SCORE :
                 startActivity(new Intent(GameActivity.this,
                         ScoreActivity.class));
                 break;
-            case 1 : // Rules
+            case RULES :
                 startActivity(new Intent(GameActivity.this,
                         RulesActivity.class));
                 break;
-            case 2 : // About
+            case ABOUT :
                 drawerLayout.closeDrawer(Gravity.LEFT);
 
                 new AlertDialog.Builder(GameActivity.this)
@@ -137,8 +201,9 @@ public class GameActivity extends AppCompatActivity {
                         .create()
                         .show();
                 break;
-            case 3 : // Exit
+            case EXIT :
                 finish();
+                break;
             default:
                 new AlertDialog.Builder(GameActivity.this)
                         .setTitle(R.string.internal_error)

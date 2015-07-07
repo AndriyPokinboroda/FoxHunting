@@ -22,11 +22,17 @@ import pokinboroda.andriy.com.foxhunting.R;
 
 
 /**
- * The type Score activity.
+ * The activity what display score list.
+ *
+ * @author Pokinboroda Andriy
+ * @version 0.1
  */
 public class ScoreActivity extends AppCompatActivity {
 
+    /** The list view which display scores. */
     private ListView listView;
+
+    /** The score list what store scores. */
     private ScoreList scoreList;
 
     @Override
@@ -39,6 +45,7 @@ public class ScoreActivity extends AppCompatActivity {
         updateListView();
     }
 
+    /** Update listView. */
     private void updateListView() {
         listView.setAdapter(new ScoreRecordAdapter(this, R.layout.score_item,
                                                    scoreList.getScoreList()));
@@ -62,25 +69,31 @@ public class ScoreActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /** This class serve as adapter for listView. */
     private class ScoreRecordAdapter extends ArrayAdapter<ScoreItem> {
 
+        /** Application context. */
         private Context context;
+
+        /** Layout for list item. */
         private int resourceId;
+
+        /** List of ScoreItems. */
         private List<ScoreItem> scoreList;
 
         /**
          * Instantiates a new Score record adapter.
          *
-         * @param mContext the m context
-         * @param resource the resource
-         * @param objects the objects
+         * @param mContext the application context
+         * @param resource the layout resource for item
+         * @param scoreItems the list of records
          */
         public ScoreRecordAdapter(final Context mContext, final int resource,
-                                  final List<ScoreItem> objects) {
-            super(mContext, resource, objects);
+                                  final List<ScoreItem> scoreItems) {
+            super(mContext, resource, scoreItems);
             this.context = mContext;
             this.resourceId = resource;
-            this.scoreList = objects;
+            this.scoreList = scoreItems;
         }
 
         @Override

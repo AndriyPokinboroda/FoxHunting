@@ -8,7 +8,10 @@ import android.view.MenuItem;
 import pokinboroda.andriy.com.foxhunting.R;
 
 /**
- * The type Rules activity.
+ * The activity what display game rules.
+ *
+ * @author Pokinboroda Andriy
+ * @version 0.1
  */
 public class RulesActivity extends AppCompatActivity {
 

@@ -10,18 +10,23 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 /**
- * The type Object serializer.
+ * Class provide static method for saving object into file
+ * and restoring from file in internal storage by serialization.
+ *
+ * @author Pokinboroda Andriy
+ * @version 0.1
  */
 public final class ObjectSerializer {
     private ObjectSerializer() { }
 
     /**
      * Deserialize from file.
+     * Return object with type <T> or null if eny exception was thrown.
      *
      * @param <T>  the type parameter
-     * @param context the context
-     * @param fileName the file name
-     * @return the t
+     * @param context the application context
+     * @param fileName the file name which store the object
+     * @return the object with type T or null
      */
     public static <T> T deserializeFromFile(final Context context,
                                             final String fileName) {
@@ -47,10 +52,10 @@ public final class ObjectSerializer {
      * Serialize to file.
      *
      * @param <T>  the type parameter
-     * @param context the context
+     * @param context the application context
      * @param fileName the file name
      * @param object the object
-     * @return the boolean
+     * @return true if object serialized, otherwise false
      */
     public static <T> boolean serializeToFile(final Context context,
                                               final String fileName,

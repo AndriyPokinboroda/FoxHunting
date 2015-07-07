@@ -10,6 +10,9 @@ import com.pokinboroda.andriy.foxhunting.util.ObjectSerializer;
 
 /**
  * Manage all score records and persistently store they.
+ *
+ * @author Pokinboroda Andriy
+ * @version 0.1
  */
 public class ScoreList  {
 
@@ -68,6 +71,7 @@ public class ScoreList  {
 
     /**
      * Gets worst score record.
+     * If list is not full return {@code ScoreItem(0, 0, "")}.
      *
      * @return the worst score
      */
